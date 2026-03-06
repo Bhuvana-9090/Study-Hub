@@ -2,14 +2,40 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { BookOpen, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ThemeToggle } from "@/components/ThemeToggle"
+import { useAuth } from "@/context/AuthContext"
 
 export default function LoginPage() {
   const [tab, setTab] = React.useState<"login" | "register">("login")
   const [showPassword, setShowPassword] = React.useState(false)
+  const [formData, setFormData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    college: ""
+  })
+  
+  const { login, register } = useAuth()
+  const router = useRouter()
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (tab === "login") {
+      login(formData.email, "Alex Johnson")
+    } else {
+      register(formData.name, formData.email, formData.password, formData.college)
+    }
+    router.push("/")
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -65,13 +91,17 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-4" onSubmit={handleSubmit}>
               {tab === "register" && (
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1.5">Full Name</label>
                   <Input
+                    name="name"
                     type="text"
+                    required
                     placeholder="Alex Johnson"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     className="bg-muted border-border focus-visible:ring-primary"
                   />
                 </div>
@@ -80,18 +110,40 @@ export default function LoginPage() {
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
                 <Input
+                  name="email"
                   type="email"
+                  required
                   placeholder="alex@university.edu"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="bg-muted border-border focus-visible:ring-primary"
                 />
               </div>
+
+              {tab === "register" && (
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1.5">College (Optional)</label>
+                  <Input
+                    name="college"
+                    type="text"
+                    placeholder="PVPSIT"
+                    value={formData.college}
+                    onChange={handleInputChange}
+                    className="bg-muted border-border focus-visible:ring-primary"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">Password</label>
                 <div className="relative">
                   <Input
+                    name="password"
+                    required
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
+                    value={formData.password}
+                    onChange={handleInputChange}
                     className="bg-muted border-border focus-visible:ring-primary pr-10"
                   />
                   <button
@@ -108,8 +160,12 @@ export default function LoginPage() {
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1.5">Confirm Password</label>
                   <Input
+                    name="confirmPassword"
+                    required
                     type="password"
                     placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
                     className="bg-muted border-border focus-visible:ring-primary"
                   />
                 </div>
@@ -123,10 +179,8 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <Button asChild type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold mt-2">
-                <Link href="/">
-                  {tab === "login" ? "Sign In" : "Create Account"}
-                </Link>
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold mt-2">
+                {tab === "login" ? "Sign In" : "Create Account"}
               </Button>
             </form>
 

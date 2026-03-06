@@ -13,12 +13,24 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 
 const mockRooms = [
-  { id: "math-101", name: "Calculus & Linear Algebra", subject: "Mathematics", users: 12, capacity: 20, active: true, color: "from-violet-500 to-indigo-500" },
-  { id: "cs-algo", name: "Data Structures & Algorithms", subject: "Computer Science", users: 8, capacity: 15, active: true, color: "from-blue-500 to-cyan-500" },
-  { id: "silent-hall", name: "Absolute Silence 🤫", subject: "General Study", users: 45, capacity: 50, active: true, color: "from-slate-500 to-slate-600" },
-  { id: "med-bio", name: "Anatomy Revision", subject: "Biology", users: 5, capacity: 10, active: false, color: "from-emerald-500 to-teal-500" },
-  { id: "language", name: "Spanish Conversation", subject: "Languages", users: 3, capacity: 8, active: true, color: "from-rose-500 to-pink-500" },
-  { id: "lit-review", name: "Modern Literature", subject: "English", users: 14, capacity: 25, active: true, color: "from-amber-500 to-orange-500" },
+  // Semester 3
+  { id: "ds", name: "Data Structures", subject: "Semester 3", users: 12, capacity: 20, active: true, color: "from-violet-500 to-indigo-500" },
+  { id: "dm", name: "Discrete Mathematics", subject: "Semester 3", users: 8, capacity: 15, active: true, color: "from-blue-500 to-cyan-500" },
+  { id: "dld", name: "Digital Logic Design", subject: "Semester 3", users: 5, capacity: 15, active: false, color: "from-emerald-500 to-teal-500" },
+  { id: "coa", name: "Computer Organization", subject: "Semester 3", users: 3, capacity: 10, active: true, color: "from-amber-500 to-orange-500" },
+  { id: "oop", name: "Object Oriented Programming", subject: "Semester 3", users: 14, capacity: 25, active: true, color: "from-rose-500 to-pink-500" },
+  { id: "ps", name: "Probability & Statistics", subject: "Semester 3", users: 6, capacity: 15, active: true, color: "from-indigo-500 to-purple-500" },
+  
+  // Semester 4
+  { id: "daa", name: "Design and Analysis of Algorithms", subject: "Semester 4", users: 10, capacity: 20, active: true, color: "from-cyan-500 to-blue-500" },
+  { id: "os", name: "Operating Systems", subject: "Semester 4", users: 15, capacity: 25, active: true, color: "from-orange-500 to-red-500" },
+  { id: "dbms", name: "Database Management Systems", subject: "Semester 4", users: 22, capacity: 30, active: true, color: "from-green-500 to-emerald-500" },
+  { id: "se", name: "Software Engineering", subject: "Semester 4", users: 0, capacity: 20, active: false, color: "from-slate-500 to-slate-600" },
+  { id: "cn", name: "Computer Networks", subject: "Semester 4", users: 7, capacity: 15, active: true, color: "from-blue-600 to-indigo-600" },
+  { id: "flat", name: "Formal Languages & Automata Theory", subject: "Semester 4", users: 4, capacity: 10, active: true, color: "from-purple-600 to-pink-600" },
+  
+  // Extra
+  { id: "general", name: "General Discussion Room", subject: "Community", users: 32, capacity: 100, active: true, color: "from-gray-700 to-gray-900" },
 ]
 
 export default function RoomsPage() {

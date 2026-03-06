@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { useAuth } from "@/context/AuthContext"
 
 const weeklyData = [
   { name: "Mon", hours: 2.5 },
@@ -40,6 +41,8 @@ const fadeUp = {
 }
 
 export default function Dashboard() {
+  const { user } = useAuth()
+  
   return (
     <div className="space-y-8 pb-10">
 
@@ -61,7 +64,7 @@ export default function Dashboard() {
           <div>
             <p className="text-white/70 text-sm font-medium mb-1 uppercase tracking-widest">Good evening 👋</p>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
-              Welcome back, Alex!
+              Welcome back, {user?.name || "Alex Johnson"}!
             </h1>
             <p className="text-white/80 text-base max-w-md">
               You're on a <span className="font-bold text-white">12-day streak</span>. Keep it going — 3.5h focused today!

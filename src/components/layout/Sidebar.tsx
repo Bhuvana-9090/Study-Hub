@@ -12,10 +12,12 @@ import {
   LogOut,
   Settings,
   Users,
+  MessageSquare,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/context/AuthContext"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -30,7 +32,10 @@ export function Sidebar({ className }: SidebarProps) {
     { label: "Notes", icon: BookOpen, href: "/notes", active: pathname.startsWith("/notes") },
     { label: "Assignments", icon: Calendar, href: "/assignments", active: pathname === "/assignments" },
     { label: "Gamification", icon: Flame, href: "/gamification", active: pathname === "/gamification" },
+    { label: "Friends Chat", icon: MessageSquare, href: "/chat", active: pathname === "/chat" },
   ]
+  
+  const { user, logout, isAuthenticated } = useAuth()
 
   return (
     <div className={cn("pb-12 border-r border-border min-h-screen bg-sidebar", className)}>
@@ -75,12 +80,23 @@ export function Sidebar({ className }: SidebarProps) {
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Button>
-            <Button variant="ghost" asChild className="w-full justify-start text-muted-foreground hover:text-rose-500">
-              <Link href="/login">
+            {isAuthenticated ? (
+              <Button 
+                variant="ghost" 
+                onClick={logout}
+                className="w-full justify-start text-muted-foreground hover:text-rose-500"
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 Log Out
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button variant="ghost" asChild className="w-full justify-start text-muted-foreground hover:text-primary">
+                <Link href="/login">
+                  <LogOut className="mr-2 h-4 w-4 rotate-180" />
+                  Login / Register
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
