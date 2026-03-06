@@ -39,7 +39,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const register = (name: string, email: string, _password: string, college?: string, avatar?: string) => {
-    const userData = { name, email, college, avatar: avatar !== undefined ? avatar : `https://i.pravatar.cc/150?u=${email}` }
+    const defaultAvatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
+    const userData = { 
+      name, 
+      email, 
+      college, 
+      avatar: (avatar === "null" || avatar === "") ? "" : (avatar !== undefined ? avatar : defaultAvatar) 
+    }
     setUser(userData)
     setIsAuthenticated(true)
     localStorage.setItem("studyhub_user", JSON.stringify(userData))

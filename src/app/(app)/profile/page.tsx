@@ -76,21 +76,36 @@ export default function ProfilePage() {
                   </button>
                   <button 
                     onClick={() => {
-                      register(formData.name, formData.email, "dummy", formData.college, "") // Empty avatar
-                      toast.success("Profile photo removed")
+                      if (formData.name) {
+                        register(formData.name, formData.email, "dummy", formData.college, "null") 
+                        toast.success("Profile photo removed")
+                      }
                     }}
-                    className="p-2 bg-rose-500 text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group"
+                    className="p-2 bg-rose-500 text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group relative"
                   >
                     <Trash2 className="h-4 w-4" />
-                    <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Remove Photo</span>
+                    <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Remove Photo</span>
                   </button>
                 </div>
               </div>
               <h2 className="text-xl font-bold text-foreground mt-6">{user?.name}</h2>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                <span className="px-2.5 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-full">Pro Student</span>
-                <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full">Sem 3</span>
+              
+              <div className="mt-8 pt-6 border-t border-border flex flex-col gap-2">
+                {!isEditing ? (
+                  <Button onClick={() => setIsEditing(true)} className="w-full bg-primary text-primary-foreground">
+                    Edit Profile Details
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button onClick={handleSave} className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white">
+                      Confirm Changes
+                    </Button>
+                    <Button variant="ghost" onClick={() => setIsEditing(false)} className="px-3">
+                      X
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

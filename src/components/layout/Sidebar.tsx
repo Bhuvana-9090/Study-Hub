@@ -33,6 +33,7 @@ export function Sidebar({ className }: SidebarProps) {
     { label: "Assignments", icon: Calendar, href: "/assignments", active: pathname === "/assignments" },
     { label: "Gamification", icon: Flame, href: "/gamification", active: pathname === "/gamification" },
     { label: "Friends Chat", icon: MessageSquare, href: "/chat", active: pathname === "/chat" },
+    { label: "Profile", icon: Settings, href: "/profile", active: pathname === "/profile" },
   ]
   
   const { user, logout, isAuthenticated } = useAuth()

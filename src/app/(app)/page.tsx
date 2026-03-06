@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { useAuth } from "@/context/AuthContext"
+import Link from "next/link"
+import { Settings } from "lucide-react"
 
 const weeklyData = [
   { name: "Mon", hours: 2.5 },
@@ -66,9 +68,15 @@ export default function Dashboard() {
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
               Welcome back, {user?.name || "Alex Johnson"}!
             </h1>
-            <p className="text-white/80 text-base max-w-md">
+            <p className="text-white/80 text-base max-w-md mb-6">
               You're on a <span className="font-bold text-white">12-day streak</span>. Keep it going — 3.5h focused today!
             </p>
+            <Button asChild variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white backdrop-blur-md">
+              <Link href="/profile">
+                <Settings className="mr-2 h-4 w-4" />
+                Edit My Profile
+              </Link>
+            </Button>
           </div>
 
           <div className="flex flex-wrap gap-3 shrink-0">
