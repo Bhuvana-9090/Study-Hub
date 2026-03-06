@@ -27,6 +27,7 @@ export function Sidebar({ className }: SidebarProps) {
     { label: "Study Rooms", icon: Users, href: "/rooms", active: pathname.startsWith("/rooms") },
     { label: "Tasks", icon: CheckSquare, href: "/tasks", active: pathname === "/tasks" },
     { label: "Resources", icon: BookOpen, href: "/resources", active: pathname.startsWith("/resources") },
+    { label: "Notes", icon: BookOpen, href: "/notes", active: pathname.startsWith("/notes") },
     { label: "Assignments", icon: Calendar, href: "/assignments", active: pathname === "/assignments" },
     { label: "Gamification", icon: Flame, href: "/gamification", active: pathname === "/gamification" },
   ]
