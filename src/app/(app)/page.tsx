@@ -24,8 +24,8 @@ export default function Dashboard() {
     <div className="space-y-6 pb-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-100">Welcome back, Alex!</h1>
-          <p className="text-slate-400 mt-1">Here is what is happening with your studies today.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Welcome back, Alex!</h1>
+          <p className="text-muted-foreground mt-1">Here is what is happening with your studies today.</p>
         </div>
         <div className="flex items-center gap-2">
           <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
