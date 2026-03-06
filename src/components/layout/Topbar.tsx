@@ -91,8 +91,10 @@ export function Topbar() {
               <p className="text-[10px] text-muted-foreground mt-1">{user?.college || "PVPSIT Student"}</p>
             </div>
             <Avatar className="h-9 w-9 border border-border shadow-sm">
-              <AvatarImage src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`} alt={user?.name} />
-              <AvatarFallback className="bg-primary text-primary-foreground text-xs">{user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarImage src={user?.avatar || undefined} alt={user?.name} />
+              <AvatarFallback className="bg-muted text-muted-foreground">
+                <User className="h-4 w-4" />
+              </AvatarFallback>
             </Avatar>
           </Link>
         ) : (

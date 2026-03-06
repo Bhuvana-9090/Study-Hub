@@ -65,8 +65,10 @@ export default function ProfilePage() {
             <CardContent className="pt-8 pb-6 text-center">
               <div className="relative inline-block">
                 <Avatar className="h-24 w-24 border-4 border-background shadow-xl mx-auto ring-2 ring-primary/20">
-                  <AvatarImage src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`} />
-                  <AvatarFallback className="text-2xl bg-primary/10 text-primary uppercase font-bold">{user?.name?.slice(0, 2)}</AvatarFallback>
+                  <AvatarImage src={user?.avatar || undefined} />
+                  <AvatarFallback className="text-4xl bg-muted text-muted-foreground font-bold">
+                    <User className="h-10 w-10" />
+                  </AvatarFallback>
                 </Avatar>
                 
                 <div className="absolute -bottom-2 -right-2 flex gap-1">
