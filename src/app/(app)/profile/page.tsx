@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { User, Mail, School, Shield, Save, Camera, LogOut, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
