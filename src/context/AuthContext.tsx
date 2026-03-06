@@ -6,12 +6,13 @@ interface User {
   name: string
   email: string
   college?: string
+  avatar?: string
 }
 
 interface AuthContextType {
   user: User | null
   login: (email: string, name?: string) => void
-  register: (name: string, email: string, password: string, college?: string) => void
+  register: (name: string, email: string, password: string, college?: string, avatar?: string) => void
   logout: () => void
   isAuthenticated: boolean
 }
@@ -37,8 +38,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("studyhub_user", JSON.stringify(userData))
   }
 
-  const register = (name: string, email: string, _password: string, college?: string) => {
-    const userData = { name, email, college }
+  const register = (name: string, email: string, _password: string, college?: string, avatar?: string) => {
+    const userData = { name, email, college, avatar: avatar !== undefined ? avatar : `https://i.pravatar.cc/150?u=${email}` }
     setUser(userData)
     setIsAuthenticated(true)
     localStorage.setItem("studyhub_user", JSON.stringify(userData))

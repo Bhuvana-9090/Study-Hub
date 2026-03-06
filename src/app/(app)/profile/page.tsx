@@ -1,8 +1,5 @@
-"use client"
-
-import * as React from "react"
-import { motion } from "framer-motion"
-import { User, Mail, School, Shield, Save, Camera, LogOut } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { User, Mail, School, Shield, Save, Camera, LogOut, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -64,15 +61,29 @@ export default function ProfilePage() {
           <Card className="bg-card border-border overflow-hidden">
             <CardContent className="pt-8 pb-6 text-center">
               <div className="relative inline-block">
-                <Avatar className="h-24 w-24 border-4 border-background shadow-xl mx-auto">
-                  <AvatarImage src={`https://i.pravatar.cc/150?u=${user?.email}`} />
-                  <AvatarFallback className="text-2xl bg-primary/10 text-primary lowercase">{user?.name?.slice(0, 2)}</AvatarFallback>
+                <Avatar className="h-24 w-24 border-4 border-background shadow-xl mx-auto ring-2 ring-primary/20">
+                  <AvatarImage src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email}`} />
+                  <AvatarFallback className="text-2xl bg-primary/10 text-primary uppercase font-bold">{user?.name?.slice(0, 2)}</AvatarFallback>
                 </Avatar>
-                <button className="absolute bottom-0 right-0 p-1.5 bg-primary text-white rounded-full shadow-lg hover:scale-110 transition-transform">
-                  <Camera className="h-4 w-4" />
-                </button>
+                
+                <div className="absolute -bottom-2 -right-2 flex gap-1">
+                  <button className="p-2 bg-primary text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group">
+                    <Camera className="h-4 w-4" />
+                    <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Change Photo</span>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      register(formData.name, formData.email, "dummy", formData.college, "") // Empty avatar
+                      toast.success("Profile photo removed")
+                    }}
+                    className="p-2 bg-rose-500 text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Remove Photo</span>
+                  </button>
+                </div>
               </div>
-              <h2 className="text-xl font-bold text-foreground mt-4">{user?.name}</h2>
+              <h2 className="text-xl font-bold text-foreground mt-6">{user?.name}</h2>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 <span className="px-2.5 py-0.5 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-full">Pro Student</span>
