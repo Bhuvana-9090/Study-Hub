@@ -2,131 +2,173 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Users, Search, Filter, Play, Clock, Volume2, Shield } from "lucide-react"
+import { motion } from "framer-motion"
+import { Filter, Plus, Search, Users } from "lucide-react"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 
 const mockRooms = [
-  { id: "math-101", name: "Calculus & Linear Algebra", subject: "Mathematics", users: 12, capacity: 20, active: true },
-  { id: "cs-algo", name: "Data Structures & Algos", subject: "Computer Science", users: 8, capacity: 15, active: true },
-  { id: "silent-hall", name: "Absolute Silence 🤫", subject: "General Study", users: 45, capacity: 50, active: true },
-  { id: "med-bio", name: "Anatomy Revision", subject: "Biology", users: 5, capacity: 10, active: false },
-  { id: "language", name: "Spanish Conversation", subject: "Languages", users: 3, capacity: 8, active: true },
-  { id: "lit-review", name: "Modern Literature", subject: "English", users: 14, capacity: 25, active: true },
+  { id: "math-101", name: "Calculus & Linear Algebra", subject: "Mathematics", users: 12, capacity: 20, active: true, color: "from-violet-500 to-indigo-500" },
+  { id: "cs-algo", name: "Data Structures & Algorithms", subject: "Computer Science", users: 8, capacity: 15, active: true, color: "from-blue-500 to-cyan-500" },
+  { id: "silent-hall", name: "Absolute Silence 🤫", subject: "General Study", users: 45, capacity: 50, active: true, color: "from-slate-500 to-slate-600" },
+  { id: "med-bio", name: "Anatomy Revision", subject: "Biology", users: 5, capacity: 10, active: false, color: "from-emerald-500 to-teal-500" },
+  { id: "language", name: "Spanish Conversation", subject: "Languages", users: 3, capacity: 8, active: true, color: "from-rose-500 to-pink-500" },
+  { id: "lit-review", name: "Modern Literature", subject: "English", users: 14, capacity: 25, active: true, color: "from-amber-500 to-orange-500" },
 ]
 
 export default function RoomsPage() {
+  const [search, setSearch] = React.useState("")
+
+  const filtered = mockRooms.filter(
+    r =>
+      r.name.toLowerCase().includes(search.toLowerCase()) ||
+      r.subject.toLowerCase().includes(search.toLowerCase())
+  )
+
   return (
-    <div className="space-y-6 pb-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-6 pb-10">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4"
+      >
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-100">Study Rooms</h1>
-          <p className="text-slate-400 mt-1">Join a virtual space and study alongside peers.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Study Rooms</h1>
+          <p className="text-muted-foreground mt-1">Join a virtual space and study alongside peers.</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground shrink-0 hover:scale-105 transition-transform">
           <Plus className="w-4 h-4 mr-2" />
           Create Room
         </Button>
-      </div>
+      </motion.div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      {/* Search & Filter */}
+      <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
             type="search"
-            placeholder="Search for rooms by name or subject..."
-            className="pl-9 bg-slate-900 border-slate-800 text-slate-200"
+            placeholder="Search rooms by name or subject..."
+            className="pl-9 bg-muted border-border text-foreground"
           />
         </div>
-        <Button variant="outline" className="border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800">
+        <Button variant="outline" className="border-border text-foreground hover:bg-muted">
           <Filter className="w-4 h-4 mr-2" />
-          Filters
+          Filter
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {mockRooms.map((room) => (
-          <Card key={room.id} className="bg-slate-900 border-slate-800 flex flex-col hover:border-indigo-500/50 transition-colors">
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start mb-2">
-                <Badge variant="secondary" className="bg-indigo-900/50 text-indigo-300 hover:bg-indigo-900/80">
-                  {room.subject}
-                </Badge>
-                {room.active && (
-                  <span className="flex h-2 w-2 rounded-full bg-emerald-500 mt-1.5 animate-pulse"></span>
-                )}
-              </div>
-              <CardTitle className="text-xl text-slate-100 leading-tight">{room.name}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 space-y-4">
-              <div className="flex items-center gap-4 text-sm text-slate-400">
-                <div className="flex items-center gap-1">
-                  <Users className="w-4 h-4" />
-                  <span>{room.users} / {room.capacity}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Volume2 className="w-4 h-4" />
-                  <span>{room.id === 'silent-hall' ? 'Silent' : 'Quiet Chat'}</span>
-                </div>
-              </div>
-              
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs text-slate-500">
-                  <span>Capacity</span>
-                  <span>{Math.round((room.users / room.capacity) * 100)}%</span>
-                </div>
-                <Progress value={(room.users / room.capacity) * 100} className="h-1.5 bg-slate-800 [&>div]:bg-indigo-500" />
-              </div>
+      {/* Room Cards Grid */}
+      {filtered.length === 0 ? (
+        /* Empty State */
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center justify-center py-24 text-center"
+        >
+          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mb-4">
+            <Users className="w-8 h-8 text-muted-foreground" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-1">No rooms found</h3>
+          <p className="text-muted-foreground text-sm mb-6">Try a different search or create your own room.</p>
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Plus className="w-4 h-4 mr-2" /> Create a Room
+          </Button>
+        </motion.div>
+      ) : (
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((room, i) => (
+            <motion.div
+              key={room.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07, duration: 0.4 }}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            >
+              <Card className="bg-card border-border flex flex-col overflow-hidden group hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+                {/* Gradient top bar */}
+                <div className={`h-1.5 w-full bg-gradient-to-r ${room.color}`} />
 
-              <div className="flex -space-x-2 pt-2">
-                {[...Array(Math.min(room.users, 4))].map((_, i) => (
-                  <Avatar key={i} className="border-2 border-slate-900 h-8 w-8">
-                    <AvatarImage src={`https://i.pravatar.cc/150?u=${room.id}${i}`} />
-                    <AvatarFallback className="bg-slate-700 text-xs text-white">U</AvatarFallback>
-                  </Avatar>
-                ))}
-                {room.users > 4 && (
-                  <div className="h-8 w-8 rounded-full bg-slate-800 border-2 border-slate-900 flex items-center justify-center text-xs font-medium text-slate-400 z-10">
-                    +{room.users - 4}
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start">
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary hover:bg-primary/20 font-medium"
+                    >
+                      {room.subject}
+                    </Badge>
+                    {room.active ? (
+                      <div className="flex items-center gap-1.5 text-xs text-emerald-500 font-medium">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Live
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Offline</span>
+                    )}
                   </div>
-                )}
-              </div>
-            </CardContent>
-            <CardFooter className="pt-2 border-t border-slate-800/50 mt-auto">
-              <Button asChild className="w-full bg-slate-800 hover:bg-indigo-600 text-white transition-colors">
-                <Link href={`/rooms/${room.id}`}>
-                  Join Room
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-    </div>
-  )
-}
+                  <CardTitle className="text-lg text-foreground leading-snug mt-2 group-hover:text-primary transition-colors">
+                    {room.name}
+                  </CardTitle>
+                </CardHeader>
 
-function Plus(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
+                <CardContent className="flex-1 space-y-4 pb-4">
+                  {/* Participant avatars */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex -space-x-2">
+                      {[...Array(Math.min(room.users, 4))].map((_, j) => (
+                        <Avatar key={j} className="border-2 border-card h-8 w-8 hover:scale-110 hover:z-10 transition-transform">
+                          <AvatarImage src={`https://i.pravatar.cc/150?u=${room.id}${j}`} />
+                          <AvatarFallback className="text-xs bg-primary text-primary-foreground">U</AvatarFallback>
+                        </Avatar>
+                      ))}
+                      {room.users > 4 && (
+                        <div className="h-8 w-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-xs font-medium text-muted-foreground z-10">
+                          +{room.users - 4}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Users className="w-3.5 h-3.5" />
+                      <span>{room.users}/{room.capacity}</span>
+                    </div>
+                  </div>
+
+                  {/* Capacity bar */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>Capacity</span>
+                      <span>{Math.round((room.users / room.capacity) * 100)}%</span>
+                    </div>
+                    <Progress
+                      value={(room.users / room.capacity) * 100}
+                      className="h-1.5 bg-muted [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-pink-400"
+                    />
+                  </div>
+                </CardContent>
+
+                <CardFooter className="pt-0 border-t border-border">
+                  <Button
+                    asChild
+                    className="w-full mt-3 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-200 font-semibold hover:scale-[1.02]"
+                  >
+                    <Link href={`/rooms/${room.id}`}>
+                      Join Room →
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
