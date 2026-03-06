@@ -8,7 +8,7 @@ interface ShellProps {
 
 export function Shell({ children }: ShellProps) {
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-50">
+    <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar className="hidden lg:block w-64 shrink-0 transition-transform duration-300" />
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar />

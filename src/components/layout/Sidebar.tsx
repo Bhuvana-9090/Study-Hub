@@ -3,21 +3,19 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { 
-  BookOpen, 
-  Calendar, 
-  CheckSquare, 
-  FolderPlus, 
-  LayoutDashboard, 
-  LogOut, 
-  Settings, 
+import {
+  BookOpen,
+  Calendar,
+  CheckSquare,
+  Flame,
+  LayoutDashboard,
+  LogOut,
+  Settings,
   Users,
-  Flame
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -25,60 +23,38 @@ export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
 
   const routes = [
-    {
-      label: "Dashboard",
-      icon: LayoutDashboard,
-      href: "/",
-      active: pathname === "/",
-    },
-    {
-      label: "Study Rooms",
-      icon: Users,
-      href: "/rooms",
-      active: pathname === "/rooms",
-    },
-    {
-      label: "Tasks",
-      icon: CheckSquare,
-      href: "/tasks",
-      active: pathname === "/tasks",
-    },
-    {
-      label: "Resources",
-      icon: BookOpen,
-      href: "/resources",
-      active: pathname === "/resources",
-    },
-    {
-      label: "Assignments",
-      icon: Calendar,
-      href: "/assignments",
-      active: pathname === "/assignments",
-    },
-    {
-      label: "Gamification",
-      icon: Flame,
-      href: "/gamification",
-      active: pathname === "/gamification",
-    },
+    { label: "Dashboard", icon: LayoutDashboard, href: "/", active: pathname === "/" },
+    { label: "Study Rooms", icon: Users, href: "/rooms", active: pathname.startsWith("/rooms") },
+    { label: "Tasks", icon: CheckSquare, href: "/tasks", active: pathname === "/tasks" },
+    { label: "Resources", icon: BookOpen, href: "/resources", active: pathname.startsWith("/resources") },
+    { label: "Assignments", icon: Calendar, href: "/assignments", active: pathname === "/assignments" },
+    { label: "Gamification", icon: Flame, href: "/gamification", active: pathname === "/gamification" },
   ]
 
   return (
-    <div className={cn("pb-12 border-r min-h-screen bg-slate-950/50 backdrop-blur-xl", className)}>
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight text-white flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-indigo-500" />
-            Virtual Study Hub
-          </h2>
-          <div className="space-y-1 mt-6">
+    <div className={cn("pb-12 border-r border-border min-h-screen bg-sidebar", className)}>
+      <div className="space-y-4 py-4 relative h-full">
+        {/* Logo */}
+        <div className="px-4 py-2">
+          <Link href="/" className="flex items-center gap-2 mb-8">
+            <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
+              <BookOpen className="w-4 h-4 text-primary-foreground" />
+            </div>
+            <span className="text-lg font-bold text-foreground tracking-tight">StudyHub</span>
+          </Link>
+
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2 px-2">
+            Main Menu
+          </p>
+
+          <div className="space-y-1">
             {routes.map((route) => (
               <Button
                 key={route.href}
                 variant={route.active ? "secondary" : "ghost"}
                 className={cn(
-                  "w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800",
-                  route.active && "bg-slate-800 text-white"
+                  "w-full justify-start text-muted-foreground hover:text-foreground hover:bg-muted",
+                  route.active && "bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary font-semibold"
                 )}
                 asChild
               >
@@ -90,16 +66,19 @@ export function Sidebar({ className }: SidebarProps) {
             ))}
           </div>
         </div>
-        
-        <div className="px-3 py-2 absolute bottom-4 w-full">
+
+        {/* Bottom Actions */}
+        <div className="px-4 absolute bottom-4 w-full">
           <div className="space-y-1">
-            <Button variant="ghost" className="w-full justify-start text-slate-400 hover:text-white">
+            <Button variant="ghost" className="w-full justify-start text-muted-foreground hover:text-foreground">
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </Button>
-            <Button variant="ghost" className="w-full justify-start text-slate-400 hover:text-rose-400">
-              <LogOut className="mr-2 h-4 w-4" />
-              Log Out
+            <Button variant="ghost" asChild className="w-full justify-start text-muted-foreground hover:text-rose-500">
+              <Link href="/login">
+                <LogOut className="mr-2 h-4 w-4" />
+                Log Out
+              </Link>
             </Button>
           </div>
         </div>

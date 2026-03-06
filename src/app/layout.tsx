@@ -33,14 +33,12 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
-          disableTransitionOnChange
+          disableTransitionOnChange={false}
         >
           <TooltipProvider>
-            <Shell>
-              {children}
-            </Shell>
+            {children}
             <Toaster />
           </TooltipProvider>
         </ThemeProvider>
