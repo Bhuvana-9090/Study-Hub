@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { BookOpen, Eye, EyeOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,7 +10,11 @@ import { ThemeToggle } from "@/components/ThemeToggle"
 import { useAuth } from "@/context/AuthContext"
 
 export default function LoginPage() {
-  const [tab, setTab] = React.useState<"login" | "register">("login")
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const initialTab = (searchParams.get("tab") as "login" | "register") || "login"
+  
+  const [tab, setTab] = React.useState<"login" | "register">(initialTab)
   const [showPassword, setShowPassword] = React.useState(false)
   const [formData, setFormData] = React.useState({
     name: "",
@@ -21,7 +25,6 @@ export default function LoginPage() {
   })
   
   const { login, register } = useAuth()
-  const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

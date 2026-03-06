@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/popover"
 import { Badge } from "@/components/ui/badge"
 import { ThemeToggle } from "@/components/ThemeToggle"
+import { useAuth } from "@/context/AuthContext"
+import Link from "next/link"
 
 const mockNotifications = [
   { id: 1, type: "invite", title: "Sarah invited you to Study Room", time: "5m ago", read: false },
@@ -21,6 +23,7 @@ const mockNotifications = [
 
 export function Topbar() {
   const unreadCount = mockNotifications.filter(n => !n.read).length
+  const { user, isAuthenticated } = useAuth()
 
   return (
     <div className="h-16 border-b border-border flex items-center justify-between px-6 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
@@ -81,10 +84,27 @@ export function Topbar() {
           </PopoverContent>
         </Popover>
 
-        <Avatar className="h-8 w-8 border border-border cursor-pointer">
-          <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="@user" />
-          <AvatarFallback className="bg-primary text-primary-foreground text-xs">AL</AvatarFallback>
-        </Avatar>
+        {isAuthenticated ? (
+          <Link href="/profile" className="flex items-center gap-3 hover:bg-muted/50 p-1.5 rounded-xl transition-colors">
+            <div className="text-right hidden sm:block">
+              <p className="text-sm font-semibold text-foreground leading-none">{user?.name}</p>
+              <p className="text-[10px] text-muted-foreground mt-1">{user?.college || "PVPSIT Student"}</p>
+            </div>
+            <Avatar className="h-9 w-9 border border-border shadow-sm">
+              <AvatarImage src={`https://i.pravatar.cc/150?u=${user?.email}`} alt={user?.name} />
+              <AvatarFallback className="bg-primary text-primary-foreground text-xs">{user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
+          </Link>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
+              <Link href="/login?tab=login">Login</Link>
+            </Button>
+            <Button variant="default" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20">
+              <Link href="/login?tab=register">Register</Link>
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
