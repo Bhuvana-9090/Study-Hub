@@ -11,8 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { useAuth } from "@/context/AuthContext"
-import Link from "next/link"
+import { useSession } from "next-auth/react"
 import { Settings } from "lucide-react"
 
 const weeklyData = [
@@ -43,7 +42,8 @@ const fadeUp = {
 }
 
 export default function Dashboard() {
-  const { user } = useAuth()
+  const { data: session } = useSession()
+  const user = session?.user
   
   return (
     <div className="space-y-8 pb-10">

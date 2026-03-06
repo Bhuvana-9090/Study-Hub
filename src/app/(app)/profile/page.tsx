@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useAuth } from "@/context/AuthContext"
+import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 export default function ProfilePage() {
-  const { user, register, logout, isAuthenticated } = useAuth()
+  const { data: session, status } = useSession()
+  const user = session?.user as any
   const router = useRouter()
   
   const [isEditing, setIsEditing] = React.useState(false)
@@ -23,19 +24,19 @@ export default function ProfilePage() {
   })
 
   React.useEffect(() => {
-    if (!isAuthenticated) {
+    if (status === "unauthenticated") {
       router.push("/login")
     }
-  }, [isAuthenticated, router])
+  }, [status, router])
 
-  if (!isAuthenticated) return null
+  if (status === "loading") return <p className="p-8 text-center">Loading profile...</p>
+  if (!session) return null
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulated update - we reuse register logic to update the local state
-    register(formData.name, formData.email, "dummy_pass", formData.college)
+    // In a real app, you'd call an API to update the DB.
     setIsEditing(false)
-    toast.success("Profile updated successfully!")
+    toast.success("Profile updated successfully! (Simulated)")
   }
 
   return (
@@ -47,10 +48,7 @@ export default function ProfilePage() {
         </div>
         <Button 
           variant="outline" 
-          onClick={() => {
-            logout()
-            router.push("/login")
-          }}
+          onClick={() => signOut()}
           className="text-rose-500 hover:text-rose-600 border-rose-200 hover:bg-rose-50"
         >
           <LogOut className="mr-2 h-4 w-4" />
@@ -72,16 +70,13 @@ export default function ProfilePage() {
                 </Avatar>
                 
                 <div className="absolute -bottom-2 -right-2 flex gap-1">
-                  <button className="p-2 bg-primary text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group">
+                  <button className="p-2 bg-primary text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group relative">
                     <Camera className="h-4 w-4" />
-                    <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Change Photo</span>
+                    <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Change Photo</span>
                   </button>
                   <button 
                     onClick={() => {
-                      if (formData.name) {
-                        register(formData.name, formData.email, "dummy", formData.college, "null") 
-                        toast.success("Profile photo removed")
-                      }
+                        toast.info("Avatar management restricted in this version.")
                     }}
                     className="p-2 bg-rose-500 text-white rounded-full shadow-lg hover:scale-110 transition-transform active:scale-95 group relative"
                   >
@@ -92,6 +87,7 @@ export default function ProfilePage() {
               </div>
               <h2 className="text-xl font-bold text-foreground mt-6">{user?.name}</h2>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
+              <p className="text-xs text-muted-foreground mt-2 font-medium">Member Since: {user?.joinedDate || "March 2026"}</p>
               
               <div className="mt-8 pt-6 border-t border-border flex flex-col gap-2">
                 {!isEditing ? (

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/popover"
 import { Badge } from "@/components/ui/badge"
 import { ThemeToggle } from "@/components/ThemeToggle"
-import { useAuth } from "@/context/AuthContext"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 const mockNotifications = [
@@ -23,7 +23,9 @@ const mockNotifications = [
 
 export function Topbar() {
   const unreadCount = mockNotifications.filter(n => !n.read).length
-  const { user, isAuthenticated } = useAuth()
+  const { data: session, status } = useSession()
+  const isAuthenticated = status === "authenticated"
+  const user = session?.user as any
 
   return (
     <div className="h-16 border-b border-border flex items-center justify-between px-6 bg-background/80 backdrop-blur-xl sticky top-0 z-50">

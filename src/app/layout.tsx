@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { Shell } from "@/components/layout/Shell";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/NextAuthProvider";
 import "./globals.css";
 
 const geistSans = Geist({

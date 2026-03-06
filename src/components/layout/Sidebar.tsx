@@ -14,10 +14,11 @@ import {
   Users,
   MessageSquare,
 } from "lucide-react"
+import { useSession, signOut } from "next-auth/react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { useAuth } from "@/context/AuthContext"
+
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -36,7 +37,9 @@ export function Sidebar({ className }: SidebarProps) {
     { label: "Profile", icon: Settings, href: "/profile", active: pathname === "/profile" },
   ]
   
-  const { user, logout, isAuthenticated } = useAuth()
+  const { data: session, status } = useSession()
+  const isAuthenticated = status === "authenticated"
+  const user = session?.user as any
 
   return (
     <div className={cn("pb-12 border-r border-border min-h-screen bg-sidebar", className)}>
@@ -82,14 +85,13 @@ export function Sidebar({ className }: SidebarProps) {
               Settings
             </Button>
             {isAuthenticated ? (
-              <Button 
-                variant="ghost" 
-                onClick={logout}
-                className="w-full justify-start text-muted-foreground hover:text-rose-500"
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Log Out
-              </Button>
+              <button
+            onClick={() => signOut()}
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-rose-500 hover:bg-rose-500/10 rounded-xl transition-colors mt-auto"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Log Out</span>
+          </button>
             ) : (
               <Button variant="ghost" asChild className="w-full justify-start text-muted-foreground hover:text-primary">
                 <Link href="/login">
